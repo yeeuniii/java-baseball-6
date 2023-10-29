@@ -31,4 +31,35 @@ public class Numbers {
         numbers.subList(0, 2);
         content = new LinkedHashSet<>(numbers);
     }
+
+    public String makeResult(Numbers other) {
+        String result;
+        int index = 0;
+        HashMap<Type, Integer> count = new HashMap<>();
+
+        count.put(Type.None, 0);
+        count.put(Type.Ball, 0);
+        count.put(Type.Strike, 0);
+        for (Integer number : this.content) {
+            Type type = getResultType(index++, number, other);
+            count.put(type, count.get(type) + 1);
+        }
+        if (count.get(Type.None) == 3) {
+            result = "낫싱";
+            return result;
+        }
+        result = Type.Ball.getResult(count.get(Type.Ball));
+        result += Type.Strike.getResult(count.get(Type.Strike));
+        return result;
+    }
+
+    private Type getResultType(int index, Integer number, Numbers other) {
+        List<Integer> otherNumbers = new ArrayList<>(other.content);
+
+        if (number.equals(otherNumbers.get(index)))
+            return Type.Strike;
+        if (otherNumbers.contains(number))
+            return Type.Ball;
+        return Type.None;
+    }
 }
