@@ -1,6 +1,10 @@
 package baseball;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Numbers {
     private LinkedHashSet<Integer> content;
@@ -17,7 +21,7 @@ public class Numbers {
             throw new IllegalArgumentException("Invalid input");
         content = new LinkedHashSet<>();
         for (char number : numbers.toCharArray())
-            content.add((int)number + '0');
+            content.add((int)number - '0');
         if (content.size() != 3 || content.contains(0))
             throw new IllegalArgumentException("Invalid input");
     }
@@ -28,7 +32,7 @@ public class Numbers {
         for (int idx = 1; idx < 10; idx++)
             numbers.add(idx);
         Collections.shuffle(numbers);
-        numbers.subList(0, 2);
+        numbers = numbers.subList(0, 3);
         content = new LinkedHashSet<>(numbers);
     }
 
