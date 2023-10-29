@@ -10,16 +10,17 @@ public class Numbers {
     private LinkedHashSet<Integer> content;
 
     public Numbers() {
+        content = new LinkedHashSet<>();
         setRandomContent();
     }
     public Numbers(String numbers) {
+        content = new LinkedHashSet<>();
         setContent(numbers);
     }
 
     public void setContent(String numbers) {
         if (numbers.length() != 3 || !numbers.matches("\\d+"))
             throw new IllegalArgumentException("Invalid input");
-        content = new LinkedHashSet<>();
         for (char number : numbers.toCharArray())
             content.add((int)number - '0');
         if (content.size() != 3 || content.contains(0))
@@ -33,7 +34,7 @@ public class Numbers {
             numbers.add(idx);
         Collections.shuffle(numbers);
         numbers = numbers.subList(0, 3);
-        content = new LinkedHashSet<>(numbers);
+        content.addAll(numbers);
     }
 
     public String makeResult(Numbers other) {
