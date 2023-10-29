@@ -37,7 +37,6 @@ public class Numbers {
     }
 
     public String makeResult(Numbers other) {
-        String result;
         int index = 0;
         HashMap<Type, Integer> count = new HashMap<>();
 
@@ -48,11 +47,9 @@ public class Numbers {
             Type type = getResultType(index++, number, other);
             count.put(type, count.get(type) + 1);
         }
-        if (count.get(Type.None) == 3) {
-            result = "낫싱";
-            return result;
-        }
-        result = Type.Ball.getResult(count.get(Type.Ball));
+        if (count.get(Type.None) == 3)
+            return Type.None.getName();
+        String result = Type.Ball.getResult(count.get(Type.Ball));
         result += Type.Strike.getResult(count.get(Type.Strike));
         return result;
     }
