@@ -1,40 +1,46 @@
 package baseball;
 
-import java.util.LinkedHashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Numbers {
-    private LinkedHashSet<Integer> content;
+    private final List<String> numbers;
+
+    private static final List<String> AVAILABLE_NUMBERS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
     public Numbers() {
-        content = new LinkedHashSet<>();
-        setRandomContent();
+        this.numbers = getRandomNumbers();
     }
+    
     public Numbers(String numbers) {
-        content = new LinkedHashSet<>();
-        setContent(numbers);
+        this.numbers = toNumbers(numbers);
     }
 
-    public void setContent(String numbers) {
-        if (numbers.length() != 3 || !numbers.matches("\\d+"))
-            throw new IllegalArgumentException("Invalid input");
-        for (char number : numbers.toCharArray())
-            content.add((int)number - '0');
-        if (content.size() != 3 || content.contains(0))
-            throw new IllegalArgumentException("Invalid input");
+    private List<String> toNumbers(String numbersString) {
+        List<String> numbers = Arrays.asList(numbersString.split(""));
+        checkValid(numbers);
+        return numbers;
     }
 
-    public void setRandomContent() {
-        List<Integer> numbers = new ArrayList<>();
+    private void checkValid(List<String> numbers) {
+        if (isInvalid(numbers)) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+    }
 
-        for (int idx = 1; idx < 10; idx++)
-            numbers.add(idx);
-        Collections.shuffle(numbers);
-        numbers = numbers.subList(0, 3);
-        content.addAll(numbers);
+    private boolean isInvalid(List<String> numbers) {
+        HashSet<String> numbersWithoutDuplication = new HashSet<>(numbers);
+        return numbersWithoutDuplication.size() != 3 || numbersWithoutDuplication.stream().anyMatch(number -> !AVAILABLE_NUMBERS.contains(number));
+    }
+
+    private List<String> getRandomNumbers() {
+        List<String> availableNumbers = new ArrayList<>(AVAILABLE_NUMBERS);
+        Collections.shuffle(availableNumbers);
+        return availableNumbers.subList(0, 3);
     }
 
     public String makeResult(Numbers other) {
@@ -44,8 +50,9 @@ public class Numbers {
         count.put(Type.None, 0);
         count.put(Type.Ball, 0);
         count.put(Type.Strike, 0);
-        for (Integer number : this.content) {
-            Type type = getResultType(index++, number, other);
+
+        for (String number : this.numbers) {
+            Type type = other.getResultType(index++, number);
             count.put(type, count.get(type) + 1);
         }
         if (count.get(Type.None) == 3)
@@ -55,13 +62,13 @@ public class Numbers {
         return result;
     }
 
-    private Type getResultType(int index, Integer number, Numbers other) {
-        List<Integer> otherNumbers = new ArrayList<>(other.content);
-
-        if (number.equals(otherNumbers.get(index)))
+    private Type getResultType(int index, String number) {
+        if (number.equals(numbers.get(index))) {
             return Type.Strike;
-        if (otherNumbers.contains(number))
+        }
+        if (numbers.contains(number)) {
             return Type.Ball;
+        }
         return Type.None;
     }
 }
