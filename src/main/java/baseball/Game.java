@@ -1,7 +1,6 @@
 package baseball;
 
 public class Game {
-    public static final String END = "3스트라이크";
 
     public void start() {
         boolean willRestart = true;
@@ -14,12 +13,12 @@ public class Game {
     }
 
     private void playOneGame() {
-        Numbers computer = new Numbers();
-        String result = "";
+        Numbers correctNumbers = new Numbers();
+        Result result = new Result();
 
-        while (!result.equals(END)) {
-            Numbers user = new Numbers(Screen.inputUserNumber());
-            result = user.makeResult(computer);
+        while (!result.isEnd()) {
+            Numbers questionNumbers = new Numbers(Screen.inputUserNumber());
+            result = correctNumbers.makeResult(questionNumbers);
             Screen.displayGameResult(result);
         }
     }

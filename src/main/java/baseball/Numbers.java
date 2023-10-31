@@ -3,6 +3,9 @@ package baseball;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import static org.mockito.Mockito.reset;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,7 +18,7 @@ public class Numbers {
     public Numbers() {
         this.numbers = getRandomNumbers();
     }
-    
+
     public Numbers(String numbers) {
         this.numbers = toNumbers(numbers);
     }
@@ -43,22 +46,14 @@ public class Numbers {
         return availableNumbers.subList(0, 3);
     }
 
-    public String makeResult(Numbers other) {
+    public Result makeResult(Numbers other) {
         int index = 0;
-        HashMap<Type, Integer> count = new HashMap<>();
-
-        count.put(Type.None, 0);
-        count.put(Type.Ball, 0);
-        count.put(Type.Strike, 0);
+        Result result = new Result();
 
         for (String number : this.numbers) {
             Type type = other.getResultType(index++, number);
-            count.put(type, count.get(type) + 1);
+            result.countIt(type);
         }
-        if (count.get(Type.None) == 3)
-            return Type.None.getName();
-        String result = Type.Ball.getResult(count.get(Type.Ball));
-        result += Type.Strike.getResult(count.get(Type.Strike));
         return result;
     }
 
