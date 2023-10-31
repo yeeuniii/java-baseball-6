@@ -3,12 +3,12 @@ package baseball;
 public class Game {
 
     public void start() {
-        boolean willRestart = true;
+        boolean isPlaying = true;
 
         Screen.displayGameStart();
-        while (willRestart) {
+        while (isPlaying) {
             playOneGame();
-            willRestart = Screen.askRestart();
+            isPlaying = Screen.askRestart();
         }
     }
 
@@ -17,7 +17,7 @@ public class Game {
         Result result = new Result();
 
         while (!result.isEnd()) {
-            Numbers questionNumbers = new Numbers(Screen.inputUserNumber());
+            Numbers questionNumbers = Screen.inputUserNumber();
             result = correctNumbers.makeResult(questionNumbers);
             Screen.displayGameResult(result);
         }

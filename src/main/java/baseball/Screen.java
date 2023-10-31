@@ -7,9 +7,9 @@ public class Screen {
         System.out.println("숫자 야구 게임을 시작합니다.");
     }
 
-    static public String inputUserNumber() {
+    static public Numbers inputUserNumber() {
         System.out.println("숫자를 입력해주세요 : ");
-        return Console.readLine();
+        return new Numbers(Console.readLine());
     }
 
     static public void displayGameResult(Result result) {
