@@ -19,10 +19,4 @@ public enum Type {
             return String.format("%d%s", time, this.name);
         return "";
     }
-
-
-
-
-
 }
-
