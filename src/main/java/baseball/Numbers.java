@@ -13,13 +13,14 @@ public class Numbers {
         content = new ArrayList<>();
         setRandomContent();
     }
+
     public Numbers(String numbers) {
         content = new ArrayList<>();
         setContent(numbers);
     }
 
     public void setContent(String numbers) {
-        if (isValidNumbers(numbers)) {
+        if (isValid(numbers)) {
             throw new IllegalArgumentException("Invalid input");
         }
         for (char number : numbers.toCharArray()) {
@@ -27,7 +28,7 @@ public class Numbers {
         }
     }
 
-    private boolean isValidNumbers(String numbers) {
+    private boolean isValid(String numbers) {
         Set<Character> checking = new HashSet<>();
 
         if (numbers.length() != 3 || !numbers.matches("\\d+")) {
@@ -48,8 +49,25 @@ public class Numbers {
         numbers = numbers.subList(0, 3);
         content.addAll(numbers);
     }
-    
-    public List<Integer> getContent() {
-        return this.content;
+
+    public Result getResult(Numbers other) {
+        int index = 0;
+        Result result = new Result();
+
+        for (Integer number : other.content) {
+            Type type = getResultType(index++, number);
+            result.put(type);
+        }
+        return result;
+    }
+
+    private Type getResultType(int index, int number) {
+        if (number == content.get(index)) {
+            return Type.Strike;
+        }
+        if (content.contains(number)) {
+            return Type.Ball;
+        }
+        return Type.None;
     }
 }
